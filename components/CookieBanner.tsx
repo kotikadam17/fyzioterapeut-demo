@@ -3,22 +3,33 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
+const COOKIE_NAME = "cookie_consent";
+const COOKIE_MAX_AGE = 60 * 60 * 24 * 365; // 1 rok
+
+function getCookie(name: string) {
+  return document.cookie.split("; ").find((r) => r.startsWith(name + "="))?.split("=")[1];
+}
+
+function setCookie(name: string, value: string) {
+  document.cookie = `${name}=${value}; path=/; max-age=${COOKIE_MAX_AGE}; SameSite=Lax`;
+}
+
 export function CookieBanner() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    if (!localStorage.getItem("cookies_accepted")) {
+    if (!getCookie(COOKIE_NAME)) {
       setVisible(true);
     }
   }, []);
 
   function accept() {
-    localStorage.setItem("cookies_accepted", "true");
+    setCookie(COOKIE_NAME, "accepted");
     setVisible(false);
   }
 
   function decline() {
-    localStorage.setItem("cookies_accepted", "false");
+    setCookie(COOKIE_NAME, "declined");
     setVisible(false);
   }
 
@@ -35,7 +46,7 @@ export function CookieBanner() {
           <div className="bg-[#1C1C1C] border border-white/10 rounded-2xl px-6 py-5 shadow-2xl flex flex-col sm:flex-row sm:items-center gap-4">
             <p className="text-white/60 text-sm leading-relaxed flex-1">
               Používáme cookies pro zajištění správné funkčnosti webu.{" "}
-              <a href="#" className="text-[#7B9E87] hover:text-[#A8C2B0] underline underline-offset-2 transition-colors">
+              <a href="/cookies" className="text-[#7B9E87] hover:text-[#A8C2B0] underline underline-offset-2 transition-colors">
                 Více informací
               </a>
             </p>
