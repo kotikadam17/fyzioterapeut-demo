@@ -33,7 +33,7 @@ export function HeroSection() {
           <motion.div variants={item} className="flex items-center gap-3 mb-8">
             <span className="block w-10 h-px bg-[#7B9E87]" />
             <span className="text-[#7B9E87] text-xs font-semibold tracking-[0.25em] uppercase">
-              Praha 2 — Vinohrady
+              Kolín
             </span>
           </motion.div>
 
@@ -133,7 +133,7 @@ export function HeroSection() {
             ))}
           </div>
           <div className="text-white text-xs font-bold">4.9 / 5</div>
-          <div className="text-white/70 text-[10px]">120+ recenzí</div>
+          <div className="text-white/70 text-[10px]">180+ recenzí</div>
         </FloatingElement>
 
         {/* Small secondary */}

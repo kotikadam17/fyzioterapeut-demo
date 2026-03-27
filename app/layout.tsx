@@ -18,9 +18,16 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Mgr. Petra Marková — Soukromá fyzioterapeutka Praha",
+  title: "Mgr. Petra Marková — Soukromá fyzioterapeutka Kolín",
   description:
-    "Soukromá fyzioterapeutická praxe v Praze 2. Individuální přístup, max. 5 pacientů denně. Bolesti zad, sportovní fyzioterapie, terapie pro ženy.",
+    "Soukromá fyzioterapeutická praxe v Kolíně. Individuální přístup, max. 5 pacientů denně. Bolesti zad, sportovní fyzioterapie, terapie pro ženy.",
+  openGraph: {
+    title: "Mgr. Petra Marková — Soukromá fyzioterapeutka Kolín",
+    description:
+      "Soukromá fyzioterapeutická praxe v Kolíně. Individuální přístup, max. 5 pacientů denně.",
+    locale: "cs_CZ",
+    type: "website",
+  },
 };
 
 export default function RootLayout({

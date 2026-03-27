@@ -20,7 +20,7 @@ export default function PrivacyPage() {
               Mgr. Petra Marková, fyzioterapeutka<br />
               Karlovo náměstí 12, 280 00 Kolín<br />
               E-mail: <a href="mailto:petra@markova-fyzio.cz" className="text-[#7B9E87] hover:underline">petra@markova-fyzio.cz</a><br />
-              Tel: <a href="tel:+420123456789" className="text-[#7B9E87] hover:underline">+420 123 456 789</a>
+              Tel: <a href="tel:+420777932382" className="text-[#7B9E87] hover:underline">+420 777 932 382</a>
             </p>
           </section>
 

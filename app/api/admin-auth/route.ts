@@ -1,4 +1,5 @@
 import { type NextRequest } from "next/server";
+import { createAdminToken } from "@/lib/adminToken";
 
 export async function POST(request: NextRequest) {
   const { password } = await request.json();
@@ -8,10 +9,11 @@ export async function POST(request: NextRequest) {
     return Response.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  const token = await createAdminToken(correct);
   const response = Response.json({ ok: true });
   response.headers.set(
     "Set-Cookie",
-    `admin_auth=${correct}; Path=/; HttpOnly; SameSite=Strict; Max-Age=86400`
+    `admin_auth=${token}; Path=/; HttpOnly; SameSite=Strict; Max-Age=86400`
   );
   return response;
 }

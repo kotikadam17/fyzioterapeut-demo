@@ -43,13 +43,13 @@ export function Footer() {
           </div>
           <div className="flex flex-col sm:flex-row gap-4">
             <a
-              href="tel:+420123456789"
+              href="tel:+420777932382"
               className="flex items-center justify-center gap-3 border border-white/20 text-white px-7 py-4 rounded-full text-sm font-medium hover:border-[#7B9E87] hover:text-[#A8C2B0] transition-all duration-200"
             >
               <svg className="w-4 h-4" viewBox="0 0 16 16" fill="none">
                 <path d="M4 2C4 2 3 3 3 5C3 10 6 13 11 13C13 13 14 12 14 12L12 10C12 10 11 11 10 11C7.5 11 5 8.5 5 6C5 5 6 4 6 4L4 2Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
-              +420 123 456 789
+              +420 777 932 382
             </a>
             <button
               onClick={openModal}

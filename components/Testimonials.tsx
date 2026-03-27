@@ -8,7 +8,7 @@ const testimonials = [
   {
     quote: "Po letech chronických bolestí zad jsem konečně našel úlevu. Petra přesně identifikovala problém a sestavila plán, který skutečně fungoval. Po 8 sezeních jsem mohl znovu sportovat.",
     name: "Ondřej K.",
-    detail: "Bolesti zad, Praha 2",
+    detail: "Bolesti zad, Kolín",
     rating: 5,
   },
   {
@@ -26,13 +26,13 @@ const testimonials = [
   {
     quote: "Po operaci kolene jsem absolvoval kompletní rehabilitaci u Petry. Přístup je naprosto individuální, prostředí klidné a výsledky hovoří za vše — chodím bez bolesti poprvé za 2 roky.",
     name: "Jana P.",
-    detail: "Pooperační rehabilitace, Praha 3",
+    detail: "Pooperační rehabilitace, Kolín",
     rating: 5,
   },
   {
     quote: "Profesionální přístup, příjemné prostředí a výsledky, které cítím. Přivedla jsem i svého muže a oba jsme spokojeni. Petra si zasluhuje každou hvězdičku.",
     name: "Veronika H.",
-    detail: "Krční páteř, Vinohrady",
+    detail: "Krční páteř, Kolín",
     rating: 5,
   },
   {

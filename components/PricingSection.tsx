@@ -39,7 +39,7 @@ export function PricingSection() {
             <div className="bg-white/5 border border-white/10 rounded-3xl overflow-hidden">
               <div className="px-4 sm:px-7 py-5 border-b border-white/10">
                 <h3 className="font-serif text-xl font-medium text-white">Standardní ceník</h3>
-                <p className="text-xs text-white/40 mt-1 font-light">Platnost od ledna 2025</p>
+                <p className="text-xs text-white/40 mt-1 font-light">Platnost od ledna 2026</p>
               </div>
               <div className="divide-y divide-white/5">
                 {pricingItems.map((item, i) => (

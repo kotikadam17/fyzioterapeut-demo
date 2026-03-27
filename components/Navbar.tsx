@@ -36,7 +36,7 @@ export function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-10 h-20 flex items-center justify-between">
         {/* Logo — personal brand */}
-        <a href="#" className="flex items-center gap-3 group">
+        <a href="/" className="flex items-center gap-3 group">
           {/* Monogram mark */}
           <div className="w-9 h-9 rounded-xl bg-[#7B9E87] flex items-center justify-center flex-shrink-0">
             <span className="font-serif text-white font-bold text-sm leading-none">PM</span>
@@ -66,12 +66,12 @@ export function Navbar() {
 
         {/* CTA */}
         <div className="hidden md:block">
-          <a
-            href="#kontakt"
+          <button
+            onClick={openModal}
             className="inline-flex items-center gap-2 bg-[#7B9E87] text-white px-5 py-2.5 rounded-full text-sm font-medium hover:bg-[#6B8E77] transition-colors duration-200"
           >
             Rezervovat termín
-          </a>
+          </button>
         </div>
 
         {/* Mobile burger */}

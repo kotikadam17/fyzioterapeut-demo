@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 interface Booking {
   id: string;
@@ -39,6 +39,11 @@ const TIME_SLOTS = ["9:00", "10:00", "11:00", "13:00", "14:00"];
 export default function AdminPage() {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const handleLogout = useCallback(async () => {
+    await fetch("/api/admin-logout", { method: "POST" });
+    window.location.href = "/admin/login";
+  }, []);
   const [viewDate, setViewDate] = useState(() => {
     const d = new Date();
     d.setDate(1);
@@ -94,7 +99,20 @@ export default function AdminPage() {
             <span className="text-white/40 text-xs ml-2">— Přehled rezervací</span>
           </div>
         </div>
-        <span className="text-white/30 text-xs">{bookings.length} rezervací celkem</span>
+        <div className="flex items-center gap-4">
+          <span className="text-white/30 text-xs">{bookings.length} rezervací celkem</span>
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-1.5 text-white/40 hover:text-white/80 transition-colors text-xs"
+          >
+            <svg className="w-3.5 h-3.5" viewBox="0 0 16 16" fill="none">
+              <path d="M6 3H3.5C3 3 2.5 3.5 2.5 4V12C2.5 12.5 3 13 3.5 13H6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+              <path d="M10 5L13 8L10 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M13 8H6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+            </svg>
+            Odhlásit
+          </button>
+        </div>
       </div>
 
       <div className="flex-1 flex flex-col lg:flex-row max-w-6xl mx-auto w-full px-6 py-8 gap-6">
