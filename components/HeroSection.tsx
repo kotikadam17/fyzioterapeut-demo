@@ -155,12 +155,12 @@ export function HeroSection() {
       </div>
 
       {/* Mobile — image + video block */}
-      <div className="lg:hidden w-full relative h-[70vw] max-h-[400px] flex-shrink-0">
+      <div className="lg:hidden w-full relative h-[90vw] max-h-[520px] flex-shrink-0">
         <Image
           src="/images/hero-petra.png"
           alt="Petra Marková — fyzioterapeutka"
           fill
-          className="object-cover object-top"
+          className="object-cover object-center"
           sizes="100vw"
           priority
         />
