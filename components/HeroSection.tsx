@@ -20,7 +20,7 @@ export function HeroSection() {
   return (
     <section className="relative min-h-screen flex overflow-hidden">
       {/* LEFT — dark panel */}
-      <div className="relative z-10 flex items-center w-full lg:w-[52%] bg-[#1C1C1C] px-8 md:px-14 lg:px-16 xl:px-20 pt-28 pb-20">
+      <div className="relative z-10 flex items-center w-full lg:w-[52%] bg-[#1C1C1C] px-6 sm:px-10 md:px-14 lg:px-16 xl:px-20 pt-24 sm:pt-28 pb-16 sm:pb-20">
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
@@ -72,15 +72,15 @@ export function HeroSection() {
           </motion.div>
 
           {/* Stats */}
-          <motion.div variants={item} className="mt-16 pt-10 border-t border-white/10 grid grid-cols-3 gap-6">
+          <motion.div variants={item} className="mt-10 sm:mt-16 pt-8 sm:pt-10 border-t border-white/10 grid grid-cols-3 gap-3 sm:gap-6">
             {[
               { value: "9+", label: "let praxe" },
               { value: "800+", label: "pacientů" },
               { value: "péče", label: "pro každého z vás" },
             ].map((stat) => (
               <div key={stat.label}>
-                <div className="font-serif text-4xl font-bold text-white">{stat.value}</div>
-                <div className="text-[11px] text-white/40 mt-1 font-medium tracking-widest uppercase">{stat.label}</div>
+                <div className="font-serif text-2xl sm:text-4xl font-bold text-white">{stat.value}</div>
+                <div className="text-[10px] sm:text-[11px] text-white/40 mt-1 font-medium tracking-widest uppercase">{stat.label}</div>
               </div>
             ))}
           </motion.div>

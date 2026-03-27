@@ -80,9 +80,9 @@ export function Testimonials() {
 
         {/* Featured testimonial slider */}
         <ScrollReveal className="mb-12">
-          <div className="relative bg-[#1C1C1C] rounded-3xl p-8 lg:p-14 overflow-hidden">
+          <div className="relative bg-[#1C1C1C] rounded-3xl p-6 sm:p-8 lg:p-14 overflow-hidden">
             {/* Quote mark */}
-            <div className="absolute top-8 left-8 font-serif text-[8rem] leading-none text-[#7B9E87]/10 pointer-events-none select-none">
+            <div className="absolute top-6 left-6 font-serif text-[5rem] sm:text-[8rem] leading-none text-[#7B9E87]/10 pointer-events-none select-none">
               "
             </div>
 
@@ -96,7 +96,7 @@ export function Testimonials() {
                 className="relative z-10"
               >
                 <Stars count={featured.rating} />
-                <blockquote className="font-serif text-xl lg:text-2xl font-medium text-white leading-relaxed mt-4 mb-8 max-w-3xl">
+                <blockquote className="font-serif text-base sm:text-xl lg:text-2xl font-medium text-white leading-relaxed mt-4 mb-6 sm:mb-8 max-w-3xl">
                   "{featured.quote}"
                 </blockquote>
                 <div>
@@ -107,7 +107,7 @@ export function Testimonials() {
             </AnimatePresence>
 
             {/* Controls */}
-            <div className="flex items-center justify-between mt-8 pt-6 border-t border-white/10">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mt-6 sm:mt-8 pt-6 border-t border-white/10">
               <div className="flex gap-2">
                 {testimonials.map((_, i) => (
                   <button

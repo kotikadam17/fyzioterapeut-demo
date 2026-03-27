@@ -146,13 +146,13 @@ export function BookingModal({ isOpen, onClose }: Props) {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 32, scale: 0.98 }}
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed inset-x-4 top-[4vh] bottom-[4vh] max-w-4xl mx-auto bg-[#1C1C1C] rounded-3xl z-50 flex flex-col overflow-hidden shadow-2xl"
+            className="fixed inset-x-2 sm:inset-x-4 top-[2vh] sm:top-[4vh] bottom-[2vh] sm:bottom-[4vh] max-w-4xl mx-auto bg-[#1C1C1C] rounded-2xl sm:rounded-3xl z-50 flex flex-col overflow-hidden shadow-2xl"
           >
             {/* Header */}
-            <div className="flex items-center justify-between px-8 py-5 border-b border-white/10 flex-shrink-0">
+            <div className="flex items-center justify-between px-5 sm:px-8 py-4 sm:py-5 border-b border-white/10 flex-shrink-0">
               <div>
-                <h2 className="font-serif text-2xl font-bold text-white">Rezervovat termín</h2>
-                <p className="text-white/40 text-sm mt-0.5">Vyberte den, čas a vyplňte kontaktní údaje</p>
+                <h2 className="font-serif text-xl sm:text-2xl font-bold text-white">Rezervovat termín</h2>
+                <p className="text-white/40 text-xs sm:text-sm mt-0.5">Vyberte den, čas a vyplňte kontaktní údaje</p>
               </div>
               <button
                 onClick={handleClose}
@@ -188,7 +188,7 @@ export function BookingModal({ isOpen, onClose }: Props) {
                 <div className="grid lg:grid-cols-2 min-h-full">
 
                   {/* ── LEFT: Calendar ── */}
-                  <div className="p-7 border-b lg:border-b-0 lg:border-r border-white/10">
+                  <div className="p-4 sm:p-7 border-b lg:border-b-0 lg:border-r border-white/10">
                     {/* Month navigation */}
                     <div className="flex items-center justify-between mb-5">
                       <button
@@ -239,7 +239,7 @@ export function BookingModal({ isOpen, onClose }: Props) {
                             disabled={disabled}
                             onClick={() => { setSelectedDate(day); setSelectedTime(null); }}
                             className={[
-                              "aspect-square rounded-xl text-sm font-medium transition-all duration-150 flex items-center justify-center",
+                              "aspect-square rounded-lg sm:rounded-xl text-xs sm:text-sm font-medium transition-all duration-150 flex items-center justify-center min-h-[36px]",
                               disabled ? "text-white/15 cursor-not-allowed" : "cursor-pointer",
                               isSelected
                                 ? "bg-[#7B9E87] text-white"
@@ -290,7 +290,7 @@ export function BookingModal({ isOpen, onClose }: Props) {
                   </div>
 
                   {/* ── RIGHT: Form ── */}
-                  <form onSubmit={handleSubmit} className="p-7 flex flex-col gap-4">
+                  <form onSubmit={handleSubmit} className="p-4 sm:p-7 flex flex-col gap-3 sm:gap-4">
                     <div>
                       <label className="block text-[10px] font-bold tracking-widest uppercase text-white/35 mb-1.5">
                         Jméno a příjmení *

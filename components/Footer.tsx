@@ -31,9 +31,9 @@ export function Footer() {
 
       {/* Contact CTA band */}
       <div className="border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-6 lg:px-10 py-16 lg:py-20 grid lg:grid-cols-2 gap-10 items-center">
+        <div className="max-w-7xl mx-auto px-6 lg:px-10 py-10 sm:py-16 lg:py-20 grid lg:grid-cols-2 gap-6 sm:gap-10 items-center">
           <div>
-            <h2 className="font-serif text-[2.5rem] lg:text-[3rem] font-bold leading-[1.0] mb-3">
+            <h2 className="font-serif text-[1.75rem] sm:text-[2.5rem] lg:text-[3rem] font-bold leading-[1.1] mb-3">
               Začněte svou cestu<br />
               <em className="italic text-[#A8C2B0]">k pohybu bez bolesti</em>
             </h2>
@@ -66,10 +66,10 @@ export function Footer() {
       </div>
 
       {/* Map + info + links */}
-      <div className="max-w-7xl mx-auto px-6 lg:px-10 py-14 grid lg:grid-cols-5 gap-8 items-start">
+      <div className="max-w-7xl mx-auto px-6 lg:px-10 py-10 sm:py-14 grid sm:grid-cols-2 lg:grid-cols-5 gap-6 sm:gap-8 items-start">
 
         {/* Left — brand + map */}
-        <div className="lg:col-span-2 flex flex-col gap-5">
+        <div className="sm:col-span-2 lg:col-span-2 flex flex-col gap-5">
           {/* Brand */}
           <div>
             <div className="flex items-center gap-3 mb-4">

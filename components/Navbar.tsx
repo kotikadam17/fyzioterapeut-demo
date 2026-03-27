@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useBooking } from "./BookingContext";
 
 const navLinks = [
   { label: "Služby", href: "#sluzby" },
@@ -14,6 +15,7 @@ const navLinks = [
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const { openModal } = useBooking();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 30);
@@ -105,12 +107,12 @@ export function Navbar() {
                   {link.label}
                 </a>
               ))}
-              <a
-                href="#kontakt"
+              <button
+                onClick={() => { openModal(); setMenuOpen(false); }}
                 className="mt-2 inline-flex justify-center bg-[#7B9E87] text-white px-5 py-3 rounded-full text-sm font-medium"
               >
                 Rezervovat termín
-              </a>
+              </button>
             </div>
           </motion.div>
         )}

@@ -16,7 +16,7 @@ export function AboutSection() {
   return (
     <section id="o-mne" className="py-28 lg:py-36 bg-[#F5EFE6]/40">
       <div className="max-w-7xl mx-auto px-6 lg:px-10">
-        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+        <div className="grid lg:grid-cols-2 gap-10 sm:gap-16 lg:gap-24 items-center">
           {/* Left — photo */}
           <ScrollReveal direction="left">
             <div className="relative">
@@ -43,7 +43,7 @@ export function AboutSection() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.4, duration: 0.6 }}
-                className="absolute -right-4 lg:-right-8 top-16 bg-white rounded-2xl shadow-xl p-5 w-48"
+                className="hidden sm:block absolute -right-4 lg:-right-8 top-16 bg-white rounded-2xl shadow-xl p-5 w-44 lg:w-48"
               >
                 {quals.slice(0, 2).map((q) => (
                   <div key={q.label} className="mb-3 last:mb-0">

@@ -33,11 +33,11 @@ export function PricingSection() {
           </h2>
         </ScrollReveal>
 
-        <div className="grid lg:grid-cols-3 gap-8 items-start">
+        <div className="grid lg:grid-cols-3 gap-5 sm:gap-8 items-start">
           {/* Standard pricelist */}
           <ScrollReveal className="lg:col-span-2">
             <div className="bg-white/5 border border-white/10 rounded-3xl overflow-hidden">
-              <div className="px-7 py-5 border-b border-white/10">
+              <div className="px-4 sm:px-7 py-5 border-b border-white/10">
                 <h3 className="font-serif text-xl font-medium text-white">Standardní ceník</h3>
                 <p className="text-xs text-white/40 mt-1 font-light">Platnost od ledna 2025</p>
               </div>
@@ -49,7 +49,7 @@ export function PricingSection() {
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: i * 0.05, duration: 0.4 }}
-                    className="flex items-center justify-between px-7 py-4 hover:bg-white/5 transition-colors duration-150"
+                    className="flex items-start sm:items-center justify-between gap-3 px-4 sm:px-7 py-4 hover:bg-white/5 transition-colors duration-150"
                   >
                     <div>
                       <span className="text-sm font-medium text-white/80">{item.name}</span>
@@ -64,7 +64,7 @@ export function PricingSection() {
                 ))}
               </div>
 
-              <div className="px-7 py-4 bg-white/5 border-t border-white/10">
+              <div className="px-4 sm:px-7 py-4 bg-white/5 border-t border-white/10">
                 <p className="text-xs text-white/30 font-light">
                   * Ceny jsou uvedeny včetně DPH. Platba kartou i hotově.
                 </p>
