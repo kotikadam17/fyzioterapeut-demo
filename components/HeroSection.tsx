@@ -18,7 +18,7 @@ const item = {
 export function HeroSection() {
   const { openModal } = useBooking();
   return (
-    <section className="relative min-h-screen flex overflow-hidden">
+    <section className="relative flex flex-col lg:flex-row lg:min-h-screen overflow-hidden bg-[#1C1C1C]">
       {/* LEFT — dark panel */}
       <div className="relative z-10 flex items-center w-full lg:w-[52%] bg-[#1C1C1C] px-6 sm:px-10 md:px-14 lg:px-16 xl:px-20 pt-24 sm:pt-28 pb-16 sm:pb-20">
         <div
@@ -154,9 +154,40 @@ export function HeroSection() {
         </FloatingElement>
       </div>
 
-      {/* Mobile bg */}
-      <div className="absolute inset-0 lg:hidden -z-10">
-        <Image src="/images/hero-petra.png" alt="" fill className="object-cover opacity-20" sizes="100vw" priority />
+      {/* Mobile — image + video block */}
+      <div className="lg:hidden w-full relative h-[70vw] max-h-[400px] flex-shrink-0">
+        <Image
+          src="/images/hero-petra.png"
+          alt="Petra Marková — fyzioterapeutka"
+          fill
+          className="object-cover object-top"
+          sizes="100vw"
+          priority
+        />
+        <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, #1C1C1C 0%, transparent 15%, transparent 80%, #1C1C1C 100%)" }} />
+
+        {/* Video preview — bottom right */}
+        <div className="absolute bottom-4 right-4 w-28 h-36 rounded-2xl overflow-hidden border-2 border-white/20 shadow-xl">
+          <video
+            src="/images/Dronový_Záběr_Fyzioterapeutické_Kliniky.mp4"
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="w-full h-full object-cover"
+          />
+        </div>
+
+        {/* Availability badge */}
+        <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl px-4 py-3">
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-[#7B9E87] animate-pulse" />
+            <div>
+              <div className="text-xs font-bold text-[#1C1C1C]">Volné termíny</div>
+              <div className="text-[10px] text-[#6B7A6E]">příští týden</div>
+            </div>
+          </div>
+        </div>
       </div>
 
     </section>
