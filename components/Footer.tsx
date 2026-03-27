@@ -150,9 +150,12 @@ export function Footer() {
             © {new Date().getFullYear()} Mgr. Petra Marková — Fyzioterapeutka, Kolín
           </p>
           <div className="flex gap-6">
-            {["Ochrana osobních údajů", "Cookies"].map((link) => (
-              <a key={link} href="#" className="text-white/30 text-xs hover:text-white/60 transition-colors duration-150">
-                {link}
+            {[
+              { label: "Ochrana osobních údajů", href: "/ochrana-osobnich-udaju" },
+              { label: "Cookies", href: "/cookies" },
+            ].map((link) => (
+              <a key={link.label} href={link.href} className="text-white/30 text-xs hover:text-white/60 transition-colors duration-150">
+                {link.label}
               </a>
             ))}
           </div>
