@@ -19,9 +19,8 @@ const links: Record<string, { label: string; href: string }[]> = {
 };
 
 const hours = [
-  { day: "Pondělí — Pátek", time: "8:00 — 18:00" },
-  { day: "Sobota", time: "8:00 — 12:00" },
-  { day: "Neděle", time: "Zavřeno" },
+  { day: "Pondělí — Pátek", time: "9:00 — 15:00" },
+  { day: "Sobota — Neděle", time: "Zavřeno" },
 ];
 
 export function Footer() {
