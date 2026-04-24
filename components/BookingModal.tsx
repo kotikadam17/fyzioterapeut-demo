@@ -48,10 +48,8 @@ export function BookingModal({ isOpen, onClose }: Props) {
   });
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
-  const [takenSlots, setTakenSlots] = useState<string[]>([]);
   const [form, setForm] = useState({ name: "", phone: "", email: "", note: "" });
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
-  const [errorMsg, setErrorMsg] = useState("");
 
   // Lock body scroll
   useEffect(() => {
@@ -59,14 +57,6 @@ export function BookingModal({ isOpen, onClose }: Props) {
     else document.body.style.overflow = "";
     return () => { document.body.style.overflow = ""; };
   }, [isOpen]);
-
-  // Fetch taken slots when date changes
-  useEffect(() => {
-    if (!selectedDate) return;
-    fetch(`/api/bookings?date=${formatDate(selectedDate)}`)
-      .then((r) => r.json())
-      .then((data) => setTakenSlots(data.taken ?? []));
-  }, [selectedDate]);
 
   // Calendar grid
   const year = viewDate.getFullYear();
@@ -95,35 +85,14 @@ export function BookingModal({ isOpen, onClose }: Props) {
       setSelectedTime(null);
       setForm({ name: "", phone: "", email: "", note: "" });
       setStatus("idle");
-      setErrorMsg("");
     }, 300);
   }
 
-  async function handleSubmit(e: React.FormEvent) {
+  function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!selectedDate || !selectedTime) return;
     setStatus("loading");
-    try {
-      const res = await fetch("/api/bookings", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...form,
-          date: formatDate(selectedDate),
-          time: selectedTime,
-        }),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        setErrorMsg(data.error ?? "Nastala chyba.");
-        setStatus("error");
-      } else {
-        setStatus("success");
-      }
-    } catch {
-      setErrorMsg("Nastala chyba. Zkuste to prosím znovu.");
-      setStatus("error");
-    }
+    setTimeout(() => setStatus("success"), 800);
   }
 
   return (
@@ -264,18 +233,14 @@ export function BookingModal({ isOpen, onClose }: Props) {
                         </div>
                         <div className="flex flex-wrap gap-2">
                           {TIME_SLOTS.map((slot) => {
-                            const taken = takenSlots.includes(slot);
                             const active = selectedTime === slot;
                             return (
                               <button
                                 key={slot}
-                                disabled={taken}
                                 onClick={() => setSelectedTime(slot)}
                                 className={[
                                   "px-4 py-2 rounded-xl text-sm font-medium transition-all duration-150",
-                                  taken
-                                    ? "bg-white/5 text-white/20 cursor-not-allowed line-through"
-                                    : active
+                                  active
                                     ? "bg-[#7B9E87] text-white"
                                     : "bg-white/10 text-white/70 hover:bg-white/20",
                                 ].join(" ")}
@@ -346,12 +311,6 @@ export function BookingModal({ isOpen, onClose }: Props) {
                     {selectedDate && selectedTime && (
                       <div className="bg-[#7B9E87]/15 border border-[#7B9E87]/30 rounded-xl px-4 py-3 text-sm text-[#A8C2B0]">
                         Termín: <strong>{formatDateCz(selectedDate)}</strong> v <strong>{selectedTime}</strong>
-                      </div>
-                    )}
-
-                    {status === "error" && (
-                      <div className="bg-red-500/15 border border-red-500/30 rounded-xl px-4 py-3 text-sm text-red-400">
-                        {errorMsg}
                       </div>
                     )}
 
