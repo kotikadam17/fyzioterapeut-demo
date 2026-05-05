@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs/server";
+import { auth, clerkClient } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { getSupabaseAdmin, type Client, type Consultation, type Photo, type Purchase } from "@/lib/supabase";
 import { UserButton } from "@clerk/nextjs";
@@ -9,11 +9,31 @@ export default async function DashboardPage() {
 
   const sb = getSupabaseAdmin();
 
-  const { data: client } = await sb
+  let { data: client } = await sb
     .from("clients")
     .select("*")
     .eq("user_id", userId)
     .single<Client>();
+
+  if (!client) {
+    // Zkus propojit podle emailu — admin mohl kartu vytvořit dříve než se klient zaregistroval
+    const clerk = await clerkClient();
+    const user = await clerk.users.getUser(userId);
+    const email = user.emailAddresses[0]?.emailAddress;
+
+    if (email) {
+      const { data: byEmail } = await sb
+        .from("clients")
+        .select("*")
+        .eq("email", email)
+        .single<Client>();
+
+      if (byEmail) {
+        await sb.from("clients").update({ user_id: userId }).eq("id", byEmail.id);
+        client = { ...byEmail, user_id: userId };
+      }
+    }
+  }
 
   if (!client) {
     return (
