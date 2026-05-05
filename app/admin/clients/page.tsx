@@ -1,7 +1,16 @@
 import { getSupabaseAdmin, type Client } from "@/lib/supabase";
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { auth } from "@clerk/nextjs/server";
+
+async function checkAdmin() {
+  const { userId } = await auth();
+  const adminId = process.env.ADMIN_CLERK_USER_ID;
+  if (!userId || (adminId && userId !== adminId)) redirect("/");
+}
 
 export default async function AdminClientsPage() {
+  await checkAdmin();
   const sb = getSupabaseAdmin();
   const { data: clients } = await sb
     .from("clients")
@@ -32,7 +41,15 @@ export default async function AdminClientsPage() {
       <div className="max-w-4xl mx-auto px-6 py-8">
         <div className="flex items-center justify-between mb-6">
           <h1 className="font-serif text-2xl font-bold text-[#1C1C1C]">Seznam klientů</h1>
-          <span className="text-sm text-[#9CA3AF]">{clients?.length ?? 0} klientů</span>
+          <div className="flex items-center gap-4">
+            <span className="text-sm text-[#9CA3AF]">{clients?.length ?? 0} klientů</span>
+            <Link
+              href="/admin/clients/new"
+              className="px-4 py-2 bg-[#1C1C1C] text-white rounded-xl text-sm font-medium hover:bg-[#333] transition-colors"
+            >
+              + Přidat klienta
+            </Link>
+          </div>
         </div>
 
         {!clients?.length ? (
