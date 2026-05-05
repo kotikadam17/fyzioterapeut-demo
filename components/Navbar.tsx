@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useBooking } from "./BookingContext";
+import { useUser } from "@clerk/nextjs";
 
 const navLinks = [
   { label: "Služby", href: "#sluzby" },
@@ -16,6 +17,7 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const { openModal } = useBooking();
+  const { isSignedIn } = useUser();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 30);
@@ -65,7 +67,13 @@ export function Navbar() {
         </nav>
 
         {/* CTA */}
-        <div className="hidden md:block">
+        <div className="hidden md:flex items-center gap-3">
+          <a
+            href={isSignedIn ? "/dashboard" : "/sign-in"}
+            className="inline-flex items-center gap-2 text-white/60 hover:text-white px-4 py-2.5 rounded-full text-sm font-medium transition-colors duration-200 border border-white/20 hover:border-white/40"
+          >
+            Klientská zóna
+          </a>
           <button
             onClick={openModal}
             className="inline-flex items-center gap-2 bg-[#7B9E87] text-white px-5 py-2.5 rounded-full text-sm font-medium hover:bg-[#6B8E77] transition-colors duration-200"
@@ -107,9 +115,16 @@ export function Navbar() {
                   {link.label}
                 </a>
               ))}
+              <a
+                href={isSignedIn ? "/dashboard" : "/sign-in"}
+                onClick={() => setMenuOpen(false)}
+                className="inline-flex justify-center border border-white/20 text-white/80 px-5 py-3 rounded-full text-sm font-medium"
+              >
+                Klientská zóna
+              </a>
               <button
                 onClick={() => { openModal(); setMenuOpen(false); }}
-                className="mt-2 inline-flex justify-center bg-[#7B9E87] text-white px-5 py-3 rounded-full text-sm font-medium"
+                className="inline-flex justify-center bg-[#7B9E87] text-white px-5 py-3 rounded-full text-sm font-medium"
               >
                 Rezervovat termín
               </button>
