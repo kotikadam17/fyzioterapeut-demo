@@ -353,14 +353,38 @@ function FotkyTab({ photos, clientId, onMsg }: {
     if (fileRef.current) fileRef.current.value = "";
   }
 
+  async function handleDelete(photo: Photo) {
+    if (!confirm(`Smazat fotku "${photo.label ?? "bez názvu"}"?`)) return;
+    onMsg("");
+    const res = await fetch("/api/photos", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: photo.id, url: photo.url }),
+    });
+    const json = await res.json();
+    if (res.ok) {
+      onMsg("Fotka smazána");
+      setTimeout(() => { onMsg(""); window.location.reload(); }, 1000);
+    } else {
+      onMsg(json.error ?? "Chyba při mazání");
+    }
+  }
+
   return (
     <div className="space-y-4">
       {photos.length > 0 && (
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
           {photos.map((p) => (
-            <div key={p.id} className="rounded-2xl overflow-hidden border border-[#E8EEE9]">
+            <div key={p.id} className="rounded-2xl overflow-hidden border border-[#E8EEE9] relative group">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={p.url} alt={p.label ?? "foto"} className="w-full aspect-square object-cover" />
+              <button
+                onClick={() => handleDelete(p)}
+                className="absolute top-2 right-2 w-7 h-7 bg-black/60 hover:bg-red-600 text-white rounded-lg text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                title="Smazat fotku"
+              >
+                ✕
+              </button>
               {p.label && (
                 <div className="bg-[#F5F5F0] px-3 py-1.5 text-xs text-[#6B7280] truncate">{p.label}</div>
               )}

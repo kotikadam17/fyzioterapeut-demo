@@ -48,3 +48,25 @@ export async function POST(req: NextRequest) {
   if (dbError) return NextResponse.json({ error: dbError.message }, { status: 500 });
   return NextResponse.json({ url: publicUrl, message: "Fotka nahrána" });
 }
+
+export async function DELETE(req: NextRequest) {
+  const { userId } = await auth();
+  if (!userId || !isAdmin(userId)) {
+    return NextResponse.json({ error: "Neautorizováno" }, { status: 403 });
+  }
+
+  const { id, url } = await req.json();
+  if (!id) return NextResponse.json({ error: "Chybí id" }, { status: 400 });
+
+  const sb = getSupabaseAdmin();
+
+  // Smaž z Storage pokud máme URL
+  if (url) {
+    const path = url.split("/client-photos/")[1];
+    if (path) await sb.storage.from("client-photos").remove([path]);
+  }
+
+  const { error } = await sb.from("photos").delete().eq("id", id);
+  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  return NextResponse.json({ message: "Fotka smazána" });
+}
