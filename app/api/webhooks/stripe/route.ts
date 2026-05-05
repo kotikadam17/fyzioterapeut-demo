@@ -2,16 +2,17 @@ import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import { getSupabaseAdmin } from "@/lib/supabase";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
-
 export async function POST(req: NextRequest) {
   const body = await req.text();
   const sig = req.headers.get("stripe-signature");
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+  const stripeKey = process.env.STRIPE_SECRET_KEY;
 
-  if (!sig || !webhookSecret) {
+  if (!sig || !webhookSecret || !stripeKey) {
     return NextResponse.json({ error: "Missing signature" }, { status: 400 });
   }
+
+  const stripe = new Stripe(stripeKey);
 
   let event: Stripe.Event;
   try {
