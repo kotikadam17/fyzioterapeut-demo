@@ -1,5 +1,4 @@
-import fs from "fs";
-import path from "path";
+import { createClient } from "@supabase/supabase-js";
 
 export interface Booking {
   id: string;
@@ -12,32 +11,45 @@ export interface Booking {
   createdAt: string;
 }
 
-const DATA_FILE = path.join(process.cwd(), "data", "bookings.json");
-
-function ensureFile() {
-  const dir = path.dirname(DATA_FILE);
-  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-  if (!fs.existsSync(DATA_FILE)) fs.writeFileSync(DATA_FILE, "[]", "utf-8");
+function getSupabase() {
+  const url = process.env.SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!url || !key) throw new Error("SUPABASE_URL nebo SUPABASE_SERVICE_ROLE_KEY není nastaveno.");
+  return createClient(url, key);
 }
 
-export function getBookings(): Booking[] {
-  ensureFile();
-  return JSON.parse(fs.readFileSync(DATA_FILE, "utf-8"));
+export async function getBookings(): Promise<Booking[]> {
+  const { data, error } = await getSupabase()
+    .from("bookings")
+    .select("*")
+    .order("date", { ascending: true })
+    .order("time", { ascending: true });
+  if (error) throw error;
+  return (data ?? []).map(row => ({ ...row, createdAt: row.created_at }));
 }
 
-export function addBooking(booking: Booking): void {
-  ensureFile();
-  const bookings = getBookings();
-  bookings.push(booking);
-  fs.writeFileSync(DATA_FILE, JSON.stringify(bookings, null, 2), "utf-8");
+export async function addBooking(booking: Omit<Booking, "createdAt">): Promise<void> {
+  const { error } = await getSupabase()
+    .from("bookings")
+    .insert({ ...booking, created_at: new Date().toISOString() });
+  if (error) throw error;
 }
 
-export function getTakenSlots(date: string): string[] {
-  return getBookings()
-    .filter((b) => b.date === date)
-    .map((b) => b.time);
+export async function getTakenSlots(date: string): Promise<string[]> {
+  const { data, error } = await getSupabase()
+    .from("bookings")
+    .select("time")
+    .eq("date", date);
+  if (error) throw error;
+  return (data ?? []).map(row => row.time);
 }
 
-export function isSlotTaken(date: string, time: string): boolean {
-  return getBookings().some((b) => b.date === date && b.time === time);
+export async function isSlotTaken(date: string, time: string): Promise<boolean> {
+  const { count, error } = await getSupabase()
+    .from("bookings")
+    .select("*", { count: "exact", head: true })
+    .eq("date", date)
+    .eq("time", time);
+  if (error) throw error;
+  return (count ?? 0) > 0;
 }

@@ -101,6 +101,15 @@ export default function AdminPage() {
         </div>
         <div className="flex items-center gap-4">
           <span className="text-white/30 text-xs">{bookings.length} rezervací celkem</span>
+          <a
+            href="/admin/clients"
+            className="flex items-center gap-1.5 text-white/40 hover:text-white/80 transition-colors text-xs"
+          >
+            <svg className="w-3.5 h-3.5" viewBox="0 0 16 16" fill="none">
+              <path d="M8 8a3 3 0 100-6 3 3 0 000 6zM2.5 14c0-2.5 2.5-4 5.5-4s5.5 1.5 5.5 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+            </svg>
+            Klienti
+          </a>
           <button
             onClick={handleLogout}
             className="flex items-center gap-1.5 text-white/40 hover:text-white/80 transition-colors text-xs"

@@ -48,8 +48,10 @@ export function BookingModal({ isOpen, onClose }: Props) {
   });
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
+  const [takenSlots, setTakenSlots] = useState<string[]>([]);
   const [form, setForm] = useState({ name: "", phone: "", email: "", note: "" });
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [errorMsg, setErrorMsg] = useState("");
 
   // Lock body scroll
   useEffect(() => {
@@ -57,6 +59,17 @@ export function BookingModal({ isOpen, onClose }: Props) {
     else document.body.style.overflow = "";
     return () => { document.body.style.overflow = ""; };
   }, [isOpen]);
+
+  // Fetch taken slots when date changes
+  useEffect(() => {
+    if (!selectedDate) return;
+    setTakenSlots([]);
+    const dateStr = formatDate(selectedDate);
+    fetch(`/api/bookings?date=${dateStr}`)
+      .then(r => r.json())
+      .then(data => setTakenSlots(data.taken ?? []))
+      .catch(() => {});
+  }, [selectedDate]);
 
   // Calendar grid
   const year = viewDate.getFullYear();
@@ -83,16 +96,48 @@ export function BookingModal({ isOpen, onClose }: Props) {
     setTimeout(() => {
       setSelectedDate(null);
       setSelectedTime(null);
+      setTakenSlots([]);
       setForm({ name: "", phone: "", email: "", note: "" });
       setStatus("idle");
+      setErrorMsg("");
     }, 300);
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!selectedDate || !selectedTime) return;
     setStatus("loading");
-    setTimeout(() => setStatus("success"), 800);
+    setErrorMsg("");
+
+    try {
+      const res = await fetch("/api/bookings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...form,
+          date: formatDate(selectedDate),
+          time: selectedTime,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setErrorMsg(data.error ?? "Něco se pokazilo, zkuste to znovu.");
+        setStatus("error");
+        // Refresh taken slots in case of 409
+        if (res.status === 409) {
+          setTakenSlots(prev => [...prev, selectedTime]);
+          setSelectedTime(null);
+        }
+        return;
+      }
+
+      setStatus("success");
+    } catch {
+      setErrorMsg("Nepodařilo se odeslat rezervaci. Zkontrolujte připojení.");
+      setStatus("error");
+    }
   }
 
   return (
@@ -234,13 +279,17 @@ export function BookingModal({ isOpen, onClose }: Props) {
                         <div className="flex flex-wrap gap-2">
                           {TIME_SLOTS.map((slot) => {
                             const active = selectedTime === slot;
+                            const taken = takenSlots.includes(slot);
                             return (
                               <button
                                 key={slot}
+                                disabled={taken}
                                 onClick={() => setSelectedTime(slot)}
                                 className={[
                                   "px-4 py-2 rounded-xl text-sm font-medium transition-all duration-150",
-                                  active
+                                  taken
+                                    ? "bg-white/5 text-white/20 line-through cursor-not-allowed"
+                                    : active
                                     ? "bg-[#7B9E87] text-white"
                                     : "bg-white/10 text-white/70 hover:bg-white/20",
                                 ].join(" ")}
@@ -311,6 +360,13 @@ export function BookingModal({ isOpen, onClose }: Props) {
                     {selectedDate && selectedTime && (
                       <div className="bg-[#7B9E87]/15 border border-[#7B9E87]/30 rounded-xl px-4 py-3 text-sm text-[#A8C2B0]">
                         Termín: <strong>{formatDateCz(selectedDate)}</strong> v <strong>{selectedTime}</strong>
+                      </div>
+                    )}
+
+                    {/* Error message */}
+                    {status === "error" && errorMsg && (
+                      <div className="bg-red-500/10 border border-red-500/30 rounded-xl px-4 py-3 text-sm text-red-400">
+                        {errorMsg}
                       </div>
                     )}
 

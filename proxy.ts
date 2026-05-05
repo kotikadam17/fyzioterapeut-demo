@@ -1,26 +1,13 @@
-import { type NextRequest, NextResponse } from "next/server";
-import { createAdminToken } from "@/lib/adminToken";
+import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
-export async function proxy(request: NextRequest) {
-  const { pathname } = request.nextUrl;
+const isProtected = createRouteMatcher(["/dashboard(.*)", "/admin(.*)"]);
 
-  if (pathname.startsWith("/admin") && !pathname.startsWith("/admin/login")) {
-    const cookie = request.cookies.get("admin_auth")?.value;
-    const correct = process.env.ADMIN_PASSWORD;
-
-    if (!correct || !cookie) {
-      return NextResponse.redirect(new URL("/admin/login", request.url));
-    }
-
-    const expectedToken = await createAdminToken(correct);
-    if (cookie !== expectedToken) {
-      return NextResponse.redirect(new URL("/admin/login", request.url));
-    }
+export default clerkMiddleware(async (auth, req) => {
+  if (isProtected(req)) {
+    await auth.protect();
   }
-
-  return NextResponse.next();
-}
+});
 
 export const config = {
-  matcher: ["/admin/:path*"],
+  matcher: ["/((?!_next/static|_next/image|favicon\\.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)"],
 };

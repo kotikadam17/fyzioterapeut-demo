@@ -3,7 +3,6 @@ import { randomUUID } from "crypto";
 import { getBookings, addBooking, getTakenSlots, isSlotTaken } from "@/lib/bookings";
 import { Resend } from "resend";
 
-// Escape user input before placing in HTML to prevent injection
 function esc(str: string) {
   return str
     .replace(/&/g, "&amp;")
@@ -16,10 +15,12 @@ export async function GET(request: NextRequest) {
   const date = new URL(request.url).searchParams.get("date");
 
   if (date) {
-    return Response.json({ taken: getTakenSlots(date) });
+    const taken = await getTakenSlots(date);
+    return Response.json({ taken });
   }
 
-  return Response.json(getBookings());
+  const bookings = await getBookings();
+  return Response.json(bookings);
 }
 
 export async function POST(request: NextRequest) {
@@ -30,7 +31,7 @@ export async function POST(request: NextRequest) {
     return Response.json({ error: "Vyplňte všechna povinná pole." }, { status: 400 });
   }
 
-  if (isSlotTaken(date, time)) {
+  if (await isSlotTaken(date, time)) {
     return Response.json({ error: "Tento termín je již obsazen." }, { status: 409 });
   }
 
@@ -42,19 +43,17 @@ export async function POST(request: NextRequest) {
     note: note || "",
     date,
     time,
-    createdAt: new Date().toISOString(),
   };
 
-  addBooking(booking);
+  await addBooking(booking);
 
-  // Send notification email (fire-and-forget — don't block the response)
   if (process.env.RESEND_API_KEY) {
     const resend = new Resend(process.env.RESEND_API_KEY);
-    // Parse date string directly to avoid timezone issues (date is YYYY-MM-DD)
     const [year, month, day] = date.split("-");
+    const adminEmail = process.env.ADMIN_EMAIL ?? "kotika@gvp.cz";
     resend.emails.send({
       from: "Rezervace <onboarding@resend.dev>",
-      to: "kotika@gvp.cz",
+      to: adminEmail,
       subject: `Nová rezervace — ${esc(name)}, ${day}.${month}.${year} v ${time}`,
       html: `
         <div style="font-family:sans-serif;max-width:480px;padding:24px">
@@ -70,7 +69,7 @@ export async function POST(request: NextRequest) {
           <p style="margin:24px 0 0;font-size:12px;color:#9CA3AF">Rezervace č. ${booking.id.slice(0, 8)}</p>
         </div>
       `,
-    }).catch(() => {}); // silent fail — booking is already saved
+    }).catch(() => {});
   }
 
   return Response.json({ success: true, booking }, { status: 201 });
